@@ -1,5 +1,7 @@
 # Mini Recycle Bin
 
+This utility was made for personal use, so you can change it as you like.
+
 This program is a utility for Windows. It is a small recycle bin icon in the system tray, with the following functionality described below. This utility is intended for those who do not like having the Recycle Bin icon always on the desktop and want to get rid of it but have no alternative.
 
 ## Installation
@@ -26,10 +28,6 @@ Also, as mentioned above, the utility changes the icon depending on the fullness
 ![изображение](https://github.com/user-attachments/assets/d742d295-87cc-4185-b817-fcbf39acf372)
 ![изображение](https://github.com/user-attachments/assets/a608eceb-731a-4423-b6f9-a6e74caad3d4)
 ![изображение](https://github.com/user-attachments/assets/472c24af-3fbf-4d45-a7bd-484906b053c9)
-
-This utility was made for personal use, so you can change it as you like.
-
-Enjoy :)
 
 ## License
 
