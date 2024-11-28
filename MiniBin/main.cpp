@@ -31,16 +31,16 @@ void UpdateTrayIcon()
     if (useDefaultIcons) 
     {
         if (IsRecycleBinEmpty())
-            nid.hIcon = hIconEmpty;
+            nid.hIcon = hIconRecycler;
         else
-            nid.hIcon = hIconFull;
+            nid.hIcon = hIconRecyclerFull;
     }
     else 
     {
         if (IsRecycleBinEmpty())
-            nid.hIcon = hIconRecycler;
-        else 
-            nid.hIcon = hIconRecyclerFull;
+            nid.hIcon = hIconEmpty;
+        else
+            nid.hIcon = hIconFull; 
     }
 
     Shell_NotifyIcon(NIM_MODIFY, &nid);
