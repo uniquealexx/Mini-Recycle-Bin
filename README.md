@@ -6,8 +6,7 @@ This program is a utility for Windows. It is a small recycle bin icon in the sys
 
 ## Installation
 
-Go to the releases in this repository and download the zip archive. After that, unzip it to a convenient location and select “Register this program for restart” in the properties of the exe file.
-
+Go to the releases in this repository and download the zip archive. After that, unpack it to a convenient place and, if desired, you can add the program shortcut (which is in the archive) to the folder with programs for autostart
 ## More about the Program
 
 The program has the following functionality:
