@@ -234,6 +234,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
     hInst = hInstance;
 
+    std::ifstream file("config.cfg");
+
+    if (!file.good())
+    {
+        config.Set("theme", "0");
+        config.Save();
+    }
+
     bUseDefaultIcons = config.Get("theme") == "0" ? TRUE : FALSE;
 
     WNDCLASS WndClass = { 0 };
