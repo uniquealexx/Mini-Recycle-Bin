@@ -21,12 +21,17 @@ The program has the following functionality:
 
 Also, as mentioned above, the utility changes the icon depending on the fullness of the recycle bin (i.e., if you have some files or folders in the recycle bin, the recycle bin icon will be displayed as full; otherwise, it will be empty).
 
-## Screenshots
+## Screenshots Icon
 
 ![изображение](https://github.com/user-attachments/assets/38948e26-6b24-4dad-98f7-7175d90f6782)
 ![изображение](https://github.com/user-attachments/assets/d742d295-87cc-4185-b817-fcbf39acf372)
 ![изображение](https://github.com/user-attachments/assets/a608eceb-731a-4423-b6f9-a6e74caad3d4)
 ![изображение](https://github.com/user-attachments/assets/472c24af-3fbf-4d45-a7bd-484906b053c9)
+
+## Screenshot Properies window
+
+![изображение](https://github.com/user-attachments/assets/22d46fb3-beed-4c74-8065-95d2735bd51b)
+
 
 ## License
 
