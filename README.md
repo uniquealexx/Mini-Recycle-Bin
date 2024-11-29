@@ -15,7 +15,7 @@ The program has the following functionality:
 
   > `Clear` - clears the recycle bin (you can determine whether a file is in the recycle bin by looking at the icon, since the utility supports changing the icon depending on the fullness of the recycle bin).
 
-  > `Change Theme` - changes the icon theme (if you downloaded this utility from the release page of this repository, you may have noticed that it contains the “Icons” folder, which includes icons straight from Windows 7! So when you click the button to change the theme, you will see the recycle bin icon from Windows 7).
+  > `Properties` - is a window that contains a combobox with a choice of icon theme (Stable version or Windows 7). If desired, you can replace the icons with your own and instead of the Windows 7 icon there will be your icon (just keep in mind that the same icon name is required as in the code or in the icon name in the release).
 
   > `Exit` - Exit the program.
 
