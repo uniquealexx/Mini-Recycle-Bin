@@ -9,7 +9,6 @@
 enum class EActions
 {
     Clear = 1,
-    ChangeTheme,
     Exit,
     Properties
 };
@@ -83,6 +82,7 @@ HICON hIconRecycler;
 HICON hIconRecyclerFull;
 BOOL bUseDefaultIcons = TRUE;
 HWND hPropertiesWnd = NULL;
+HWND hComboBox = NULL;
 Config config("config.cfg");
 
 BOOL IsRecycleBinEmpty()
@@ -106,8 +106,50 @@ void UpdateTrayIcon()
 
 LRESULT CALLBACK PropertiesWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    static HFONT hFont = NULL;
+
     switch (uMsg)
     {
+    case WM_CREATE:
+    {
+        NONCLIENTMETRICS ncm = { sizeof(NONCLIENTMETRICS) };
+        SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
+        hFont = CreateFontIndirect(&ncm.lfMessageFont);
+
+        hComboBox = CreateWindow(L"COMBOBOX", NULL,
+            WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
+            25, 25, 200, 200, hWnd, NULL, hInst, NULL);
+
+        // TODO: Remove style windows 95 and return actual
+        // SetWindowTheme(hComboBox, L"Explorer", NULL);
+
+        SendMessage(hComboBox, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+        int currentTheme = config.Get("theme") == "0" ? 0 : 1;
+
+        SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)L"Stable version");
+        SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)L"Windows 7");
+        SendMessage(hComboBox, CB_SETCURSEL, currentTheme, 0);
+        break;
+    }
+    case WM_DESTROY:
+        if (hFont)
+        {
+            DeleteObject(hFont);
+        }
+        break;
+    case WM_COMMAND:
+        if (HIWORD(wParam) == CBN_SELCHANGE && (HWND)lParam == hComboBox)
+        {
+            int selectedIndex = SendMessage(hComboBox, CB_GETCURSEL, 0, 0);
+
+            config.Set("theme", selectedIndex == 0 ? "0" : "1");
+            config.Save();
+
+            bUseDefaultIcons = selectedIndex == 0 ? TRUE : FALSE;
+            UpdateTrayIcon();
+        }
+        break;
     case WM_CLOSE:
         DestroyWindow(hWnd);
         hPropertiesWnd = NULL;
@@ -126,19 +168,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case (int)EActions::Clear:
+        {
             SHEmptyRecycleBin(NULL, NULL, SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND);
             UpdateTrayIcon();
             break;
-        case (int)EActions::ChangeTheme:
-            bUseDefaultIcons = !bUseDefaultIcons;
-            config.Set("theme", bUseDefaultIcons ? "1" : "0");
-            config.Save();
-            UpdateTrayIcon();
-            break;
+        }
         case (int)EActions::Exit:
+        {
             Shell_NotifyIcon(NIM_DELETE, &NotifyData);
             PostQuitMessage(0);
             break;
+        }
         case (int)EActions::Properties:
             if (hPropertiesWnd == NULL)
             {
@@ -149,7 +189,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 RegisterClass(&wc);
 
                 hPropertiesWnd = CreateWindow(L"PropertiesWindowClass", L"Properties", WS_OVERLAPPEDWINDOW,
-                    CW_USEDEFAULT, CW_USEDEFAULT, 600, 800, NULL, NULL, hInst, NULL);
+                    CW_USEDEFAULT, CW_USEDEFAULT, 265, 250, NULL, NULL, hInst, NULL);
 
                 ShowWindow(hPropertiesWnd, SW_SHOW);
                 UpdateWindow(hPropertiesWnd);
@@ -171,7 +211,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             HMENU hMenu = CreatePopupMenu();
             AppendMenu(hMenu, MF_STRING, (int)EActions::Clear, L"Clear");
-            AppendMenu(hMenu, MF_STRING, (int)EActions::ChangeTheme, L"Change theme");
             AppendMenu(hMenu, MF_STRING, (int)EActions::Properties, L"Properties");
             AppendMenu(hMenu, MF_STRING, (int)EActions::Exit, L"Exit");
             SetForegroundWindow(hWnd);
@@ -194,8 +233,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     hInst = hInstance;
-    
-    bUseDefaultIcons = config.Get("theme") == "0" ? FALSE : TRUE;
+
+    bUseDefaultIcons = config.Get("theme") == "0" ? TRUE : FALSE;
 
     WNDCLASS WndClass = { 0 };
     WndClass.lpfnWndProc = WindowProc;
